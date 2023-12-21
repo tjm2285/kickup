@@ -6,6 +6,9 @@ public class BallController : MonoBehaviour
 {
     Rigidbody m_Rigidbody;
     public float m_Thrust = 20f;
+
+    public GameObject _lowerBound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +30,14 @@ public class BallController : MonoBehaviour
             }
 
             
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject == _lowerBound)
+        {
+            Debug.Log("hit Ground");
         }
     }
 }
