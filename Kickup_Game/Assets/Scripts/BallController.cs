@@ -4,45 +4,51 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    Rigidbody _rigidbody;
+    Rigidbody2D _rigidbody;
     public float _thrust = 20f;
     public float torque;
     public GameObject _lowerBound;
+    public GameObject _leftBound;
+    public GameObject _rightBound;
+    Vector2 lastVelocity;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody2D>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100))
-            {
-                Debug.Log(hit.transform.name);
+       
+    }
 
-                //when you hit to hemishpere it shoots dwon
-                var mouseVectorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                /* float movementForce  = 10000f;
+    void FixedUpdate()
+    {
+        lastVelocity = _rigidbody.velocity;
+    }
 
-                 Vector3 playerVectorPosition = transform.position;
-                 Vector2 ForceVector = (mouseVectorPosition - playerVectorPosition).normalized;
-                 _rigidbody.AddForce(ForceVector * movementForce * -1);*/
 
-                float turn = Input.GetAxis("Horizontal");
-                Debug.Log(turn);
-                Vector3 goalVector = ((mouseVectorPosition - transform.position).normalized)*-1;
-                Debug.Log(goalVector);
-                _rigidbody.AddTorque(transform.up * torque * turn);
-                _rigidbody.AddForce(new Vector2(goalVector.y, goalVector.z) * _thrust);
-                
-            }
-        }
+    private void OnMouseDown()
+    {
+        Debug.Log("mousebuttondown");
+        var mouseVectorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        /* float movementForce  = 10000f;
+
+         Vector3 playerVectorPosition = transform.position;
+         Vector2 ForceVector = (mouseVectorPosition - playerVectorPosition).normalized;
+         _rigidbody.AddForce(ForceVector * movementForce * -1);*/
+
+        float turn = Input.GetAxis("Horizontal");
+        Debug.Log(turn);
+        Vector3 goalVector = ((mouseVectorPosition - transform.position).normalized) * -1;
+        Debug.Log(goalVector);
+        //_rigidbody.velocity = Vector3.zero;
+        // _rigidbody.AddTorque(transform.up * torque * turn);
+        _rigidbody.AddForce(new Vector2(goalVector.y, goalVector.z) * _thrust);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -51,5 +57,24 @@ public class BallController : MonoBehaviour
         {
             Debug.Log("hit Ground");
         }
+       /* else if (collision.gameObject == _leftBound)
+        {
+            Debug.Log("hit left");
+            var speed = lastVelocity.magnitude;
+            var direction = Vector2.Reflect(lastVelocity.normalized,
+                                            collision.contacts[0].normal);
+
+            _rigidbody.velocity = direction * Mathf.Max(speed, 2f);
+        }
+        else if (collision.gameObject == _rightBound)
+        {
+            Debug.Log("hit right");
+            var speed = lastVelocity.magnitude;
+            var direction = Vector2.Reflect(lastVelocity.normalized,
+                                            collision.contacts[0].normal);
+
+            _rigidbody.velocity = direction * Mathf.Max(speed, 2f);
+        }*/
+
     }
 }
