@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,37 +19,28 @@ public class BallController : MonoBehaviour
     private Vector2 _screenBounds;
     private float _objectWidth;
     private float _objectHeight;
-    
+
+    public delegate void BallHitHandler();
+    public event BallHitHandler BallHit;
+
     // Start is called before the first frame update
     void Start()
-    {
-        _rigidbody = GetComponent<Rigidbody2D>();
+    {        
         _screenBounds = _camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, _camera.transform.position.z));
         _objectWidth = transform.GetComponent<SpriteRenderer>().bounds.extents.x;
         _objectHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
-
-        Debug.Log(_screenBounds);
-
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartGame()
     {
-        
-       
+        _rigidbody = GetComponent<Rigidbody2D>();
+        gameObject.SetActive(true);
+        _rigidbody.simulated = true;
     }
 
-    void FixedUpdate()
-    {
-       // lastVelocity = _rigidbody.velocity;
-
-
-    }
     void LateUpdate()
     {
-        Vector3 viewPos = transform.position;
-        //viewPos.x = Mathf.Clamp(viewPos.x, _screenBounds.x + _objectWidth, _screenBounds.x * -1 - _objectWidth);
-        //viewPos.y = Mathf.Clamp(viewPos.y, _screenBounds.y + _objectHeight, _screenBounds.y * -1 - _objectHeight);
+        Vector3 viewPos = transform.position;        
         transform.position = viewPos;
 
         if ((transform.position.x + _objectWidth) > _screenBounds.x)
@@ -87,17 +79,14 @@ public class BallController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("mousebuttondown");
         var mouseVectorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
        
-
         float turn = Input.GetAxis("Horizontal");
-        Debug.Log(turn);
-        Vector3 goalVector = ((mouseVectorPosition - transform.position).normalized) * -1;
-        Debug.Log(goalVector);
-       
-        // _rigidbody.AddTorque(transform.up * torque * turn);
+        
+        Vector3 goalVector = ((mouseVectorPosition - transform.position).normalized) * -1;       
+               
         _rigidbody.AddForce(new Vector2(goalVector.y, goalVector.z) * _thrust);
+        BallHit?.Invoke();
     }
 
 
