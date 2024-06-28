@@ -10,22 +10,24 @@ public class BallController : MonoBehaviour
     private Camera _camera;
     Rigidbody2D _rigidbody;
     public float _thrust = 20f;
-    public float torque;
-    public GameObject _lowerBound;
-    public GameObject _leftBound;
-    public GameObject _rightBound;
-    Vector2 lastVelocity;
-
+    public float torque;    
+        
     private Vector2 _screenBounds;
     private float _objectWidth;
     private float _objectHeight;
 
+    private Vector3 originalPositon;
+
     public delegate void BallHitHandler();
     public event BallHitHandler BallHit;
 
+    public delegate void GameOverHandler();
+    public event GameOverHandler GameOverEvent;
+
     // Start is called before the first frame update
     void Start()
-    {        
+    {
+        originalPositon = transform.position;
         _screenBounds = _camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, _camera.transform.position.z));
         _objectWidth = transform.GetComponent<SpriteRenderer>().bounds.extents.x;
         _objectHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
@@ -36,6 +38,7 @@ public class BallController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         gameObject.SetActive(true);
         _rigidbody.simulated = true;
+        transform.position = originalPositon;
     }
 
     void LateUpdate()
@@ -92,6 +95,7 @@ public class BallController : MonoBehaviour
 
     private void GameOver()
     {
+        GameOverEvent?.Invoke();
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = 0;
         _rigidbody.simulated = false;
