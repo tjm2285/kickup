@@ -25,12 +25,13 @@ public class Game : MonoBehaviour
     }
 
     private void RestartGame()
-    {
+    {       
+        Debug.Log("RestartGame");
         _gameOverScreen.gameObject.SetActive(false);
         _score = 0;
         _gameUI.SetText(_score.ToString());
         _ball.StartGame();
-
+        _ball.GameOverEvent += HandleGameOver;
     }
 
     private void StartGame()
@@ -45,8 +46,10 @@ public class Game : MonoBehaviour
 
     private void HandleGameOver()
     {
+        Debug.Log("HandleGameOver");
         _gameOverScreen.gameObject.SetActive(true);
         _gameOverScreen.SetText(_score.ToString());
+        _ball.GameOverEvent -= HandleGameOver;
     }
 
     private void IncrementScore()
