@@ -28,8 +28,8 @@ public class BallController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {        
-        Debug.Log(startPosition);
+    {       
+        
         originalPositon = startPosition;
         _screenBounds = _camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, _camera.transform.position.z));
         _objectWidth = transform.GetComponent<SpriteRenderer>().bounds.extents.x;
