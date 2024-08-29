@@ -8,6 +8,8 @@ public class BallController : MonoBehaviour
 {
     [SerializeField]
     private Camera _camera;
+    [SerializeField]
+    private GameObject _trailRenderer;
     Rigidbody2D _rigidbody;
     public float _thrust = 20f;
     public float torque;
@@ -19,7 +21,9 @@ public class BallController : MonoBehaviour
     private float _objectHeight;
 
     private Vector3 originalPositon;
-    
+
+    private AudioSource _kickAudio;
+
     public delegate void BallHitHandler();
     public event BallHitHandler BallHit;
 
@@ -34,6 +38,7 @@ public class BallController : MonoBehaviour
         _screenBounds = _camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, _camera.transform.position.z));
         _objectWidth = transform.GetComponent<SpriteRenderer>().bounds.extents.x;
         _objectHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
+        _kickAudio = GetComponent<AudioSource>();        
     }
 
     public void StartGame()
@@ -41,7 +46,8 @@ public class BallController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         gameObject.SetActive(true);
         _rigidbody.simulated = true;
-        transform.position = startPosition;        
+        transform.position = startPosition;
+        _trailRenderer.SetActive(true);
     }
 
     void LateUpdate()
@@ -76,6 +82,11 @@ public class BallController : MonoBehaviour
         
         transform.position = position;
         _rigidbody.velocity = velocity;
+        Debug.Log(_kickAudio.isPlaying);
+        if (_kickAudio.isPlaying == false)
+        {
+            _kickAudio.Play();
+        }
         /*EmitBounceParticles(
             boundary,
             position.y - velocity.y * durationAfterBounce,
@@ -93,11 +104,14 @@ public class BallController : MonoBehaviour
         _rigidbody.AddTorque( torque );
         _rigidbody.AddForce(new Vector2(goalVector.y, goalVector.z) * _thrust);
         BallHit?.Invoke();
+       // _kickAudio.Pause();
+        _kickAudio.Play();
     }
 
 
     private void GameOver()
     {
+        _trailRenderer.SetActive(false);
         GameOverEvent?.Invoke();
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = 0;
