@@ -5,11 +5,14 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class BallController : MonoBehaviour
-{
-    [SerializeField]
-    private Camera _camera;
+{   
+ 
     [SerializeField]
     private GameObject _trailRenderer;
+    [SerializeField]
+    private AudioSource _kickAudio;
+
+    private Camera _camera;
     Rigidbody2D _rigidbody;
     public float _thrust = 20f;
     public float torque;
@@ -22,7 +25,7 @@ public class BallController : MonoBehaviour
 
     private Vector3 originalPositon;
 
-    private AudioSource _kickAudio;
+    
 
     public delegate void BallHitHandler();
     public event BallHitHandler BallHit;
@@ -32,17 +35,16 @@ public class BallController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {       
-        
+    {   
         originalPositon = startPosition;
         _screenBounds = _camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, _camera.transform.position.z));
         _objectWidth = transform.GetComponent<SpriteRenderer>().bounds.extents.x;
-        _objectHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
-        _kickAudio = GetComponent<AudioSource>();        
+        _objectHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;             
     }
 
-    public void StartGame()
+    public void StartGame( Camera camera)
     {
+        _camera = camera;
         _rigidbody = GetComponent<Rigidbody2D>();
         gameObject.SetActive(true);
         _rigidbody.simulated = true;
@@ -70,7 +72,7 @@ public class BallController : MonoBehaviour
             GameOver();
         }
     }
-   
+      
 
     public void BounceX(float boundary)
     {        
