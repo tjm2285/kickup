@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: 940bb60b94cfde044a64d253a8732f6a
   m_SerializeEntries:
   - m_GUID: 7c3efadeac92b4643b59a0309e184158
-    m_Address: Assets/Prefabs/FieldScene Variant.prefab
+    m_Address: FieldScene
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

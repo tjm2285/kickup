@@ -38,9 +38,9 @@ public class Game : MonoBehaviour
         _ball.GameOverEvent += HandleGameOver;
     }
 
-    private void StartGame()
+    private void StartGame(string levelName)
     {
-        Addressables.LoadAssetAsync<GameObject>("FieldScene").Completed += OnLoadDone;        
+        Addressables.LoadAssetAsync<GameObject>(levelName).Completed += OnLoadDone;        
     }
     private void OnLoadDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
     {
@@ -52,7 +52,7 @@ public class Game : MonoBehaviour
         _gameUI.SetText(_score.ToString());
 
         _ball = go.GetComponentInChildren<BallController>();
-        Debug.Log(_ball);
+        
         _ball.StartGame(_camera);
         _ball.BallHit += IncrementScore;
         _ball.GameOverEvent += HandleGameOver;

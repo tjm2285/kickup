@@ -25,8 +25,6 @@ public class BallController : MonoBehaviour
 
     private Vector3 originalPositon;
 
-    
-
     public delegate void BallHitHandler();
     public event BallHitHandler BallHit;
 
@@ -84,7 +82,7 @@ public class BallController : MonoBehaviour
         
         transform.position = position;
         _rigidbody.velocity = velocity;
-        Debug.Log(_kickAudio.isPlaying);
+        
         if (_kickAudio.isPlaying == false)
         {
             _kickAudio.Play();
