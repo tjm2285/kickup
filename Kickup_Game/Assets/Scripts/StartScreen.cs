@@ -5,12 +5,16 @@ using UnityEngine;
 public class StartScreen : MonoBehaviour
 {
 
-    public delegate void StartScreenButtonHandler();
-    public event StartScreenButtonHandler StartPressedChanged;
+    public delegate void StartScreenButtonHandler(string levelName);
+    public event StartScreenButtonHandler StartPressedChanged;    
     // Start is called before the first frame update
-    
-    public void StartPressed()
+
+    public void Level1Pressed()
     {
-        StartPressedChanged?.Invoke();
+        StartPressedChanged?.Invoke("FieldScene");
+    }
+    public void Level2Pressed()
+    {
+        StartPressedChanged?.Invoke("BeachScene");
     }
 }
