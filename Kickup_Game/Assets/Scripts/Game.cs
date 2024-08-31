@@ -18,6 +18,7 @@ public class Game : MonoBehaviour
     [SerializeField]
     private GameOverUI _gameOverScreen;
 
+    private GameObject _gameplayScene;
     private BallController _ball;
 
     private int _score = 0;
@@ -26,6 +27,14 @@ public class Game : MonoBehaviour
     {
         _startScreen.StartPressedChanged += StartGame;
         _gameOverScreen.RestartButtonPressed += RestartGame;
+        _gameOverScreen.ReturnButtonPressed += ResetGame;
+    }
+
+    private void ResetGame()
+    {
+        GameObject.Destroy(_gameplayScene);
+        _startScreen.gameObject.SetActive(true);
+        _gameOverScreen.gameObject.SetActive(false);
     }
 
     private void RestartGame()
@@ -45,13 +54,13 @@ public class Game : MonoBehaviour
     private void OnLoadDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
     {
         // In a production environment, you should add exception handling to catch scenarios such as a null result.
-        var go = GameObject.Instantiate( obj.Result);
-        go.transform.SetParent(_gamePlay.transform);
+        _gameplayScene = GameObject.Instantiate( obj.Result);
+        _gameplayScene.transform.SetParent(_gamePlay.transform);
         _startScreen.gameObject.SetActive(false);
         _score = 0;
         _gameUI.SetText(_score.ToString());
 
-        _ball = go.GetComponentInChildren<BallController>();
+        _ball = _gameplayScene.GetComponentInChildren<BallController>();
         
         _ball.StartGame(_camera);
         _ball.BallHit += IncrementScore;
