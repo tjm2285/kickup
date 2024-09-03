@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -24,6 +25,8 @@ public class BallController : MonoBehaviour
     private float _objectHeight;
 
     private Vector3 originalPositon;
+    
+    private ParticleSystem _particleSystem;
 
     public delegate void BallHitHandler();
     public event BallHitHandler BallHit;
@@ -37,7 +40,8 @@ public class BallController : MonoBehaviour
         originalPositon = startPosition;
         _screenBounds = _camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, _camera.transform.position.z));
         _objectWidth = transform.GetComponent<SpriteRenderer>().bounds.extents.x;
-        _objectHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;             
+        _objectHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
+        _particleSystem = GetComponent<ParticleSystem>();
     }
 
     public void StartGame( Camera camera)
@@ -49,7 +53,10 @@ public class BallController : MonoBehaviour
         transform.position = startPosition;
         _trailRenderer.SetActive(true);
     }
-
+    public void StartStreak()
+    {
+        _particleSystem.Play();
+    }
     void LateUpdate()
     {
         Vector3 viewPos = transform.position;        
@@ -104,7 +111,7 @@ public class BallController : MonoBehaviour
         _rigidbody.AddTorque( torque );
         _rigidbody.AddForce(new Vector2(goalVector.y, goalVector.z) * _thrust);
         BallHit?.Invoke();
-       // _kickAudio.Pause();
+       
         _kickAudio.Play();
     }
 
@@ -116,5 +123,7 @@ public class BallController : MonoBehaviour
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = 0;
         _rigidbody.simulated = false;
+        _particleSystem.Clear();
+        _particleSystem.Pause();
     }
 }

@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2993709555109538608, guid: b9e3891d2786dff489a31edd2d08d69b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3532780548963374752, guid: b9e3891d2786dff489a31edd2d08d69b, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
@@ -16,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 27c20f4d781c81a44a3d70c43cba381b, type: 3}
+    - target: {fileID: 3729434762394259434, guid: b9e3891d2786dff489a31edd2d08d69b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3764471450006445374, guid: b9e3891d2786dff489a31edd2d08d69b, type: 3}
       propertyPath: m_Name
       value: FieldScene Variant
@@ -64,10 +72,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7541595209924875024, guid: b9e3891d2786dff489a31edd2d08d69b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 8452259647842690988, guid: b9e3891d2786dff489a31edd2d08d69b, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56404ba4fc0cd9f48a1ed7ec33a61e32, type: 2}
     - target: {fileID: 8492413102456366552, guid: b9e3891d2786dff489a31edd2d08d69b, type: 3}
       propertyPath: m_Sprite
       value: 

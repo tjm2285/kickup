@@ -477,6 +477,7 @@ MonoBehaviour:
   _gameUI: {fileID: 1176386459}
   _camera: {fileID: 765223833}
   _gameOverScreen: {fileID: 16979131}
+  _streakLength: 10
 --- !u!4 &139470405
 Transform:
   m_ObjectHideFlags: 0

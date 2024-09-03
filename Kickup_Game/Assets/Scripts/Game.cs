@@ -18,6 +18,9 @@ public class Game : MonoBehaviour
     [SerializeField]
     private GameOverUI _gameOverScreen;
 
+    [SerializeField]
+    private int _streakLength;
+
     private GameObject _gameplayScene;
     private BallController _ball;
 
@@ -78,6 +81,10 @@ public class Game : MonoBehaviour
     {
         _score++;
         _gameUI.SetText(_score.ToString());
+        if(_score > _streakLength)
+        {
+            _ball.StartStreak();
+        }
     }
 
     private void OnDisable()
