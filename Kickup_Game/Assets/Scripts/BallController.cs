@@ -63,17 +63,23 @@ public class BallController : MonoBehaviour
         transform.position = viewPos;
 
         if ((transform.position.x + _objectWidth) > _screenBounds.x)
-        {            
+        {
             transform.position = new Vector3(_screenBounds.x + _objectWidth, transform.position.y, transform.position.z);
             BounceX(_screenBounds.x);
         }
         else if ((transform.position.x - _objectWidth) < _screenBounds.x * -1)
-        {         
+        {
             transform.position = new Vector3((_screenBounds.x * -1) - _objectWidth, transform.position.y, transform.position.z);
             BounceX(_screenBounds.x * -1);
         }
+        else if (transform.position.y + _objectHeight > _screenBounds.y)
+        {
+            //transform.position = new Vector3(_screenBounds.x + _objectWidth, transform.position.y, transform.position.z);
+            //BounceX(_screenBounds.y);
+
+        }
         else if (transform.position.y - _objectHeight < (_screenBounds.y * -1))
-        {            
+        {
             GameOver();
         }
     }
