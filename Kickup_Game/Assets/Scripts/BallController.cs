@@ -61,19 +61,24 @@ public class BallController : MonoBehaviour
     {
         Vector3 viewPos = transform.position;        
         transform.position = viewPos;
-
+        
         if ((transform.position.x + _objectWidth) > _screenBounds.x)
-        {            
+        {
             transform.position = new Vector3(_screenBounds.x + _objectWidth, transform.position.y, transform.position.z);
             BounceX(_screenBounds.x);
         }
         else if ((transform.position.x - _objectWidth) < _screenBounds.x * -1)
-        {         
+        {
             transform.position = new Vector3((_screenBounds.x * -1) - _objectWidth, transform.position.y, transform.position.z);
             BounceX(_screenBounds.x * -1);
         }
+        else if ((transform.position.y + _objectHeight) > (_screenBounds.y + 5))
+        {
+            transform.position = new Vector3(transform.position.x, (_screenBounds.y - 5) + _objectHeight , transform.position.z);
+            BounceY(_screenBounds.y);
+        }
         else if (transform.position.y - _objectHeight < (_screenBounds.y * -1))
-        {            
+        {
             GameOver();
         }
     }
@@ -100,7 +105,27 @@ public class BallController : MonoBehaviour
             boundary < 0f ? 90f : 270f
         );*/
     }
+    public void BounceY(float boundary)
+    {
+        Vector3 position = transform.position;
+        Vector3 velocity = _rigidbody.velocity;
+        float durationAfterBounce = (position.y - boundary) / velocity.y;
+        position.y = 2f * boundary - position.y;
+        velocity.y = -velocity.y;
 
+        transform.position = position;
+        _rigidbody.velocity = velocity;
+
+        if (_kickAudio.isPlaying == false)
+        {
+            _kickAudio.Play();
+        }
+        /*EmitBounceParticles(
+            position.x - velocity.x * durationAfterBounce,
+            boundary,
+            boundary < 0f ? 0f : 180f
+        );*/
+    }
     private void OnMouseDown()
     {
         var mouseVectorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
